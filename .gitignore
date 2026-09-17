@@ -1,0 +1,21 @@
+# Hugo 生成的静态网站文件
+/public/
+
+# Hugo 生成的资源缓存
+/resources/_gen/
+
+# Hugo 构建锁文件
+.hugo_build.lock
+
+# macOS 系统文件
+.DS_Store
+
+# 编辑器配置
+.vscode/
+.idea/
+
+# 日志文件
+*.log
+
+# 环境变量文件
+.env
