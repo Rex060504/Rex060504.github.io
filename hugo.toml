@@ -109,10 +109,10 @@ enableEmoji = true       # 支持 emoji
 
   # 个人主页模式（与 homeInfoParams 二选一，默认关闭；开启后首页只显示个人主页，不显示文章列表）
   [params.profileMode]
-    enabled = false
+    enabled = true
     title = 'rex060504'
     subtitle = '个人博客'
-    imageUrl = './images/avatar.jpeg/'
+    imageUrl = '/images/avatar.jpeg'
     imageWidth = 120
     imageHeight = 120
 
