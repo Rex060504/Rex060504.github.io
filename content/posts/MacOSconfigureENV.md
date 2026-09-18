@@ -1,7 +1,7 @@
 ---
 title: '如何在MacOS上配置环境变量'
 date: '2026-09-18T18:15:29+08:00'
-draft: true
+draft: false
 author: 'rex060504'
 tags: ['MacOS']
 categories: ['tip']
