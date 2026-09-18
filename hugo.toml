@@ -112,7 +112,7 @@ enableEmoji = true       # 支持 emoji
     enabled = false
     title = 'rex060504'
     subtitle = '个人博客'
-    imageUrl = 'image/avatar.jpeg/'
+    imageUrl = 'images/avatar.jpeg/'
     imageWidth = 120
     imageHeight = 120
 
