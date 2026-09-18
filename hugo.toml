@@ -1,4 +1,4 @@
-baseURL = 'https://Rex060504.github.io'
+baseURL = 'https://rex060504.github.io/'
 locale = 'en-us'
 title = 'My New Hugo Project'
 theme = "PaperMod"
