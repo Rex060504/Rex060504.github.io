@@ -1,5 +1,157 @@
-baseURL = 'https://rex060504.github.io/'
-locale = 'en-us'
-title = 'My New Hugo Project'
-theme = "PaperMod"
+# =====================================================================
+# Hugo 站点配置 · PaperMod 主题
+# 站点地址：https://rex060504.github.io/
+# =====================================================================
 
+baseURL = 'https://rex060504.github.io/'
+title = 'rex060504 的博客'
+theme = 'PaperMod'
+hasCJKLanguage = true
+
+# 分页：默认每页 10 篇（首页在 content/_index.md 中覆盖为 5 篇）
+paginate = 10
+
+# 默认语言（中文，且 URL 不带 /zh-cn/ 前缀）
+defaultContentLanguage = 'zh-cn'
+defaultContentLanguageInSubdir = false
+
+# 站点功能
+enableRobotsTXT = true   # 生成 /robots.txt
+enableEmoji = true       # 支持 emoji
+
+# 输出格式：HTML + RSS + JSON（JSON 用于站内搜索）
+[outputs]
+  home = ['HTML', 'RSS', 'JSON']
+
+# 分类法
+[taxonomies]
+  category = 'categories'
+  tag = 'tags'
+  series = 'series'
+
+# =====================================================================
+# 语言与顶部导航菜单
+# =====================================================================
+[languages]
+  [languages.zh-cn]
+    locale = 'zh-cn'       # Hugo 0.158+ 使用 locale 取代 languageCode
+    label = '中文'          # Hugo 0.158+ 使用 label 取代 languageName
+    weight = 1
+
+    [languages.zh-cn.menu]
+      [[languages.zh-cn.menu.main]]
+        identifier = 'home'
+        name = '首页'
+        url = '/'
+        weight = 10
+      [[languages.zh-cn.menu.main]]
+        identifier = 'posts'
+        name = '博客'
+        url = '/posts/'
+        weight = 20
+      [[languages.zh-cn.menu.main]]
+        identifier = 'tags'
+        name = '标签'
+        url = '/tags/'
+        weight = 30
+      [[languages.zh-cn.menu.main]]
+        identifier = 'archives'
+        name = '归档'
+        url = '/archives/'
+        weight = 40
+      [[languages.zh-cn.menu.main]]
+        identifier = 'about'
+        name = '关于'
+        url = '/about/'
+        weight = 50
+      # 搜索（可选）：取消下方注释即可在菜单显示“搜索”
+      # [[languages.zh-cn.menu.main]]
+      #   identifier = 'search'
+      #   name = '搜索'
+      #   url = '/search/'
+      #   weight = 60
+
+# =====================================================================
+# PaperMod 主题参数
+# =====================================================================
+[params]
+  env = 'production'                     # production：压缩资源等优化
+  title = 'rex060504 的博客'
+  description = '个人博客：记录技术、学习与生活'
+  keywords = ['博客', '技术', 'Hugo', 'PaperMod']
+  author = 'rex060504'
+  # images = ['<首页 og:image 图片地址>']
+
+  DateFormat = '2006-01-02'              # 日期显示格式
+  defaultTheme = 'auto'                  # light / dark / auto
+  disableThemeToggle = false
+
+  ShowReadingTime = true                 # 显示阅读时长
+  ShowShareButtons = true                # 显示分享按钮
+  ShowPostNavLinks = true                # 上一篇 / 下一篇
+  ShowBreadCrumbs = true                 # 面包屑导航
+  ShowCodeCopyButtons = true             # 代码块复制按钮
+  ShowWordCount = true                   # 字数统计
+  ShowRssButtonInSectionTermList = true  # 列表页 RSS 按钮
+  ShowPageNums = true                    # 分页页码
+  UseHugoToc = true                      # 使用 Hugo 生成目录
+  showtoc = false                        # 默认关闭目录（文章内 toc: true 开启）
+  hidemeta = false
+  hideSummary = false
+  disableScrollToTop = false
+  mainSections = ['posts']               # 首页最新文章的数据来源
+
+  # 首页：个人简介（显示在最新文章上方）
+  [params.homeInfoParams]
+    Title = '你好，我是 rex060504'
+    Content = '欢迎来到我的博客。这里记录我的技术笔记、学习心得与生活随笔。'
+    AlignSocialIconsTo = 'left'
+
+  # 个人主页模式（与 homeInfoParams 二选一，默认关闭；开启后首页只显示个人主页，不显示文章列表）
+  [params.profileMode]
+    enabled = false
+    title = 'rex060504'
+    subtitle = '个人博客'
+    imageUrl = ''
+    imageWidth = 120
+    imageHeight = 120
+
+  # 社交图标（name 需为 PaperMod 支持的图标名，如 github/twitter/email 等）
+  [[params.socialIcons]]
+    name = 'github'
+    url = 'https://github.com/rex060504'
+  # [[params.socialIcons]]
+  #   name = 'twitter'
+  #   url = 'https://twitter.com/你的用户名'
+  # [[params.socialIcons]]
+  #   name = 'email'
+  #   url = 'mailto:you@example.com'
+
+  # 站内搜索（Fuse.js）。启用方式：1) 取消上方“搜索”菜单注释；2) content/search.md 已就绪
+  [params.fuseOpts]
+    isCaseSensitive = false
+    shouldSort = true
+    location = 0
+    distance = 1000
+    threshold = 0.4
+    minMatchCharLength = 0
+    keys = ['title', 'permalink', 'summary', 'content']
+
+# 评论、统计为可选功能，先留配置项，暂不接入真实密钥。
+# 评论（giscus / utterances / disqus 等）示例：
+#   [params.comments]
+#     enabled = true
+#     provider = 'giscus'
+# 统计（站点验证）示例：
+#   [params.analytics]
+#     google = { SiteVerificationTag = '...' }
+#     bing   = { SiteVerificationTag = '...' }
+
+# =====================================================================
+# Markdown 渲染
+# =====================================================================
+[markup]
+  [markup.highlight]
+    noClasses = false
+  [markup.goldmark.renderer]
+    unsafe = true
