@@ -171,9 +171,6 @@ disableThemeToggle = false
 1. 在 `hugo.toml` 的 `[menu]` 中取消「搜索」菜单项的注释；
 2. `content/search.md` 已就绪，`[params.fuseOpts]` 已配置，无需其它改动。
 
-### 评论 / 统计（可选，暂未接入）
-
-`hugo.toml` 末尾已留注释占位。接入 giscus 评论或 Google/Bing 统计时，按注释示例填入你自己的配置即可，**请勿提交真实密钥**。
 
 ## 常见问题
 

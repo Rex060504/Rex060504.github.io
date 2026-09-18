@@ -78,7 +78,7 @@ enableEmoji = true       # 支持 emoji
   env = 'production'                     # production：压缩资源等优化
   title = 'rex060504 的博客'
   description = '个人博客：记录技术、学习与生活'
-  keywords = ['博客', '技术', 'Hugo', 'PaperMod']
+  keywords = ['博客', '技术', 'Hugo', 'PaperMod','MacOS']
   author = 'rex060504'
   # images = ['<首页 og:image 图片地址>']
 
@@ -112,7 +112,7 @@ enableEmoji = true       # 支持 emoji
     enabled = false
     title = 'rex060504'
     subtitle = '个人博客'
-    imageUrl = ''
+    imageUrl = 'image/avatar.jpeg/'
     imageWidth = 120
     imageHeight = 120
 
