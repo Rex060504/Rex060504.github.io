@@ -6,7 +6,7 @@ author: 'rex060504'
 tags: ['博客']
 categories: ['学习']
 summary: '关于动态规划的学习梳理'
-toc: true
+ShowToc: true
 ---
 
 ## 动态规划的核心三步

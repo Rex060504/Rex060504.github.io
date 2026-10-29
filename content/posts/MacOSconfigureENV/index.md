@@ -6,7 +6,7 @@ author: 'rex060504'
 tags: ['MacOS']
 categories: ['tip']
 summary: '介绍如何在MacOS上配置环境变量（以MySQL为例）'
-toc: true
+ShowToc: true
 ---
 
 ## 1.打开终端并检查环境变量是否可用

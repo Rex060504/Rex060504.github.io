@@ -77,7 +77,7 @@ author: 'rex060504'
 tags: []
 categories: []
 summary: ''
-toc: false
+ShowToc: false
 ---
 ```
 
@@ -91,7 +91,7 @@ toc: false
 | `tags` | 标签列表，如 `['Hugo', '博客']` |
 | `categories` | 分类列表，如 `['随笔']` |
 | `summary` | 列表页摘要（不写则自动截取正文） |
-| `toc` | `true` 时显示文章目录 |
+| `ShowToc` | `true` 时显示文章目录（PaperMod 字段名，写成 `toc` 无效） |
 | `author` | 作者（默认取 `hugo.toml` 中的 `author`） |
 
 ## 部署到 GitHub Pages

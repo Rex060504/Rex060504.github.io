@@ -6,7 +6,7 @@ author: 'rex060504'
 tags: ['Hugo', '博客']
 categories: ['随笔']
 summary: '这是我的第一篇博客文章，介绍这个站点的搭建方式与基本用法。'
-toc: true
+ShowToc: true
 ---
 
 这是一篇示例文章，用来演示本博客的 Markdown 排版效果。

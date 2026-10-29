@@ -6,7 +6,7 @@ author: 'rex060504'
 tags: ['博客']
 categories: ['学习']
 summary: '图论的初步学习'
-toc: true
+ShowToc: true
 ---
 
 ## 图的常见存储方式
