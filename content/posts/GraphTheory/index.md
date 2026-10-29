@@ -6,7 +6,7 @@ author: 'rex060504'
 tags: ['博客']
 categories: ['学习']
 summary: '图论的初步学习'
-toc: false
+toc: true
 ---
 
 ## 图的常见存储方式
@@ -1155,4 +1155,231 @@ def func(n, graph, s,k):
                     queue.append((v, step+1))
                     in_queue[v][step+1]=True
     return dist
+```
+
+## Floyd 算法
+
+前面的 Dijstra 、bell_man 、spfa算法都是求单源最短路（一个起点到其他点）。Floyd算法可以求任意两点之间的最短路径，也就是“全源最短路”。
+
+### 核心思想 动态规划
+
+枚举一个“中转点”，看看从 i 到 j，如果先到 k 再到 j，会不会更短。
+
+状态转移方程：dist[i][j]=min(dist[i][j], dist[i][k]+dist[k][j])
+
+其中：
+dist[i][j]：从点 i 到点 j 的当前最短距离。  
+k：中转点    
+意思就是：从 i 到 j，可以直达；也可以 i → k → j   
+
+定义：dist[i][j] 表示从 i 到 j，只允许经过某些点作为中转时的最短距离。
+
+Floyd 的过程是：
+
+第 1 轮：只允许经过 1 号点中转   
+第 2 轮：只允许经过 1、2 号点中转    
+第 3 轮：只允许经过 1、2、3 号点中转   
+……    
+第 n 轮：允许经过所有点中转     
+最后得到的 dist[i][j] 就是任意两点之间的最短路。
+
+### 初始化
+
+假设图有 n 个点，编号从 0 到 n-1。
+
+初始化一个二维数组：dist[i][j]
+
+dist[i][i] = 0，自己到自己距离为 0.  
+如果 i 到 j 有一条边，权值为 w，则 dist[i][j] = w.   
+如果没有边，则设为无穷大 INF.   
+如果有多条边，取最小值.   
+
+```python
+INF = float('inf')
+dist = [[INF] * n for _ in range(n)]
+for i in range(n):
+    dist[i][i] = 0
+for u, v, w in edges:
+    dist[u][v] = min(dist[u][v], w)
+```
+如果是有向图，只设置 dist[u][v]。
+如果是无向图，还要设置：dist[v][u] = min(dist[v][u], w)
+
+### 核心代码
+
+```python
+for k in range(n):          # 枚举中转点
+    for i in range(n):      # 枚举起点
+        for j in range(n):  # 枚举终点
+            if dist[i][k] + dist[k][j] < dist[i][j]:
+                dist[i][j] = dist[i][k] + dist[k][j]
+```
+加上防止无穷大相加溢出的优化：
+```python
+for k in range(n):
+    for i in range(n):
+        if dist[i][k] == INF:
+            continue
+        for j in range(n):
+            if dist[k][j] == INF:
+                continue
+            dist[i][j] = min(
+                dist[i][j],
+                dist[i][k] + dist[k][j]
+            )
+```
+
+#### 为什么 k 要放在最外层
+
+因为 Floyd 的本质是：
+
+第一轮：允许经过点 0 中转。   
+第二轮：允许经过点 1 中转    
+……    
+第 k 轮：允许经过点 k 中转    
+如果 k 放在里面，状态更新顺序就乱了，可能得不到正确答案。
+
+### 为什么这样正确
+
+假设从 i 到 j 的最短路是：i → ...... → j  
+
+这条路径上会经过一些中转点。
+
+Floyd 每次枚举一个中转点 k，相当于问：
+
+如果现在允许经过 k，那么 i 到 j 能不能更短？   
+当所有点都被枚举过之后，所有可能的中转点都考虑过了，所以 dist[i][j] 就是最短路。   
+
+### 复杂度
+
+时间复杂度：O(n^3). 空间复杂度：O(n^2). 其中 n 是点数。
+
+所以 Floyd 适合：
+
+点数不太大，比如 n <= 500 左右.  
+需要求所有点对之间的最短路.   
+图里可能有负权边.   
+如果 n 很大，比如 10^5，Floyd 就不合适了.   
+
+### Floyd 能处理负权边吗？
+
+可以。
+
+Floyd 可以处理负权边，但 不能有负权回路。
+
+如果存在负权环，那么你可以一直绕这个环，路径会越来越短，最短路径就不存在了。
+
+Floyd 跑完之后，可以检测负环：
+```python
+for i in range(n):
+    if dist[i][i] < 0:
+        print("存在负权环")
+```
+因为正常情况下，自己到自己的距离应该是 0。
+如果跑完 Floyd 后 dist[i][i] < 0，说明存在负权环。
+
+### 完整模版
+
+```python
+def floyd(n,edges):
+    INF=float('inf')
+    dist=[[INF]*n for _ in range(n)]
+
+    for i in range(n):
+        dist[i][i]=0
+
+    for u,v,w in edges:
+        dist[u][v] = min(dist[u][v] , w)
+    # 如果是无向图，还要加：
+    # dist[v][u] = min(dist[v][u], w)
+    for k in range(n):
+        for i in range(n):
+            if dist[i][k] == INF:
+                continue
+            for j in range(n):
+                if dist[k][j] == INF:
+                    continue
+                dist[i][j]=min(dist[i][j] , dist[i][k] + dist[k][j])
+    return dist
+```
+
+### 练习题
+
+1. [小明逛公园](https://kamacoder.com/problempage.php?pid=1155)
+
+## A* 算法
+
+A* 可以看作改良版的BFS或Dijkstra 
+
+Dijkstra 只按“已经走了多远”扩展；
+A* 还会估计“离目标还有多远”，所以更有方向性。
+
+### 核心公式
+
+对每个节点n定义：f(n) = g(n) + h(n)
+
+g(n):从起点S到节点n的实际已花代价.    
+h(n):从节点n到目标G的启发式估计代价.   
+f(n):经过 n 到达目标的“总代价估计”
+
+A* 每次从开放集中取出 f(n)最小的节点扩展
+
+对于点到点到距离估计可用的计算方法：
+曼哈顿距离，计算方式： d = abs(x1-x2)+abs(y1-y2)。  
+欧氏距离（欧拉距离） ，计算方式：d = sqrt( (x1-x2)^2 + (y1-y2)^2 )    
+切比雪夫距离，计算方式：d = max(abs(x1 - x2), abs(y1 - y2))    
+
+### 算法流程
+维护两个集合：
+
+open：待扩展节点，通常用优先队列，按 f 排序；
+closed：已经扩展过的节点。
+
+流程：
+
+把起点加入 open，计算 f(S) = 0 + h(S)。   
+如果 open 为空，失败。   
+从 open 取出 f 最小的节点 n。   
+如果 n 是目标，回溯父节点得到路径，结束。   
+把 n 放入 closed。   
+对 n 的每个邻居 m：   
+计算新的 g_new = g(n) + c(n,m)；   
+如果 m 不在 open/closed 中，或 g_new < g(m)：   
+更新 g(m) = g_new；   
+更新父节点为 n；   
+计算 f(m) = g(m) + h(m)；   
+把 m 加入 open，必要时从 closed 中移出重开。   
+回到第 2 步。   
+
+### 伪代码
+```python
+AStar(start, goal):
+    open = 优先队列，按 f 从小到大排序
+    g[start] = 0
+    f[start] = h(start)
+    open.push(start, f[start])
+    parent[start] = null
+
+    while open 非空:
+        n = open.pop_min()
+
+        if n == goal:
+            return 重建路径(parent, goal)
+
+        closed.add(n)
+
+        for m in neighbors(n):
+            tentative_g = g[n] + cost(n, m)
+
+            if m 不在 g 中 或 tentative_g < g[m]:
+                parent[m] = n
+                g[m] = tentative_g
+                f[m] = g[m] + h(m)
+
+                if m 在 closed 中:
+                    closed.remove(m)
+
+                open.push_or_update(m, f[m])
+
+    return 失败
 ```

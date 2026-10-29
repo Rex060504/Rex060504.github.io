@@ -406,3 +406,69 @@ coins =  3*1*5    +   3*5*8   +  1*3*8  + 1*8*1 = 167
                 coins=val[k]*val[j]*val[i]
                 dp[i][j]=max(dp[i][j],dp[i][k]+dp[k][j]+coins)
 ```
+
+## 多维dp
+
+题目：[方格取数](https://www.luogu.com.cn/problem/P1004)
+
+思路：此题最开始很容易用贪心去解决，实际上贪心是不对的，每次保证当前最优并不能保证全局最优。比如在这样的一个图中，如果我们用贪心去解决，显然第一次一定会取得两个10：1+1+1+10+10=23 第二次只能：1+1+1+1+1+1=6 此时总和是29. 但事实上，能一眼看出和最大的两条路是：1+1+1+10+1+1+1=16  1+1+1+1+1+1+10=16 最大总和是32.
+```
+0  1  1  1  0
+1  0  0  1  1
+1  0  0  0  1
+1  10 0  0  10
+0  1  1  1  0
+```
+
+必须要同时维护两个线路的信息。题目要求下，两条路线的路径是可以重合的，但是重合点的权值只能取一次，所以我们可以转换成两个线路同时出发，但是不能重复取。
+
+因为同时出发，所以在同一时刻下两人的步数是相同的，且两个人各自的坐标之和为一个和此时可步数有关的定值。源点到终点的步数最后一定是n-1步，我们可以枚举步数s（0～n-2），又由于对于一个人的坐标之和为定值（和步数s有关），所以我们只需要分别枚举两个人的横坐标i k，通过计算就能得到纵坐标j l。
+
+同时维护s i k 需要一个三维dp数组: dp[s][i][k].  
+定义dp[s][i][k]是在步数为s的这一个时刻下，第一个人横坐标是i，第二个人横坐标是j，这个联合状态下的最大权和。
+
+当前时刻s一定是由上一时刻s-1转移而来，对于分别两个人的状态是由其上方或左方的状态（两者取大的）转移而来
+
+设每一时刻的坐标之和为sum_of_index , sum_of_index=s+2 (2是一个修正值).  
+j=sum_of_index-i, l=sum_of_index-k   
+两个人分别有从左转移和从上转移过来的两种情况，所以对于联合状态有2*2=4种前驱情况。
+i+j=k+l=s+2  
+1. (i-1,j)->(i,j) and (k-1,l)->(k,l) 对应dp[s-1][i-1][k-1]
+2. (i,j-1)->(i,j) and (k,l-1)->(k,l) 对应dp[s-1][i][k]
+3. (i-1,j)->(i,j) and (k,l-1)->(k,l) 对应dp[s-1][i-1][k]
+4. (i,j-1)->(i,j) and (k-1,l)->(k,l) 对应dp[s-1][i][k-1]
+
+状态转移方程：
+```python
+dp[s][i][k]=val+max(dp[s-1][i-1][k-1],dp[s-1][i][k],dp[s-1][i-1][k],dp[s-1][i][k-1])
+```
+
+其中val在 (i,j)!=(k,l)时 val=grid[i][j]+grid[k][l];   
+(i,j)==(k,l)时 val=grid[i][j]
+
+完整代码:
+```python
+    n=int(input())
+    grid=[[0]*(n+1) for _ in range(n+1)]
+    x,y,w=map(int, input().split())
+    while x!=0 and y!=0 and w!=0:
+        grid[x][y]=w
+        x, y, w = map(int, input().split())
+    dp=[[[0]*(n+1) for _ in range(n+1)] for _ in range(n*2-1)]
+    for s in range(2*n-1):
+        sum_of_index=s+2
+        for i in range(1,n+1):
+            for k in range(1,n+1):
+                j=sum_of_index-i
+                l=sum_of_index-k
+                if 1<=i<(n+1) and 1<=j<(n+1) and 1<=k<(n+1) and 1<=l<(n+1):
+                    if i!=k or j!=l:
+                        val=grid[i][j]+grid[k][l]
+                    else:
+                        val=grid[i][j]
+                    dp[s][i][k]=val+max(dp[s-1][i-1][k-1],dp[s-1][i][k],dp[s-1][i-1][k],dp[s-1][i][k-1])
+    print(dp[2*n-2][n][n])
+```
+
+
+
